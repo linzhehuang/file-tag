@@ -47,7 +47,7 @@ fn main() {
         exit(0)
     }
 
-    let to = path.parent().unwrap().join(name.to_string());
+    let to = path.parent().unwrap().join(new_file_name.to_string());
     if to.exists() {
         ui::dialog::message(
             &format!("Copy failed, \n'{}' exists.", &new_file_name),
