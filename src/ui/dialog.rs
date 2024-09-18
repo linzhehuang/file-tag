@@ -1,11 +1,14 @@
 use fltk::{prelude::*, *};
 use std::{cell::Cell, rc::Rc};
 
+const WIN_BASE_SIZE: (i32, i32) = (128, 96);
+
 pub fn choice(text: &str, ok: &str, cancel: &str) -> bool {
     let choice = Rc::new(Cell::new(false));
 
+    let (tw, th) = measure_text(text);
     let mut win = window::Window::default()
-        .with_size(420, 128)
+        .with_size(WIN_BASE_SIZE.0 + tw, WIN_BASE_SIZE.1 + th)
         .center_screen();
     win.make_modal(true);
     win.end();
@@ -57,8 +60,9 @@ pub fn choice(text: &str, ok: &str, cancel: &str) -> bool {
 }
 
 pub fn message(text: &str, close: &str) {
+    let (tw, th) = measure_text(text);
     let mut win = window::Window::default()
-        .with_size(420, 128)
+        .with_size(WIN_BASE_SIZE.0 + tw, WIN_BASE_SIZE.1 + th)
         .center_screen();
     win.make_modal(true);
     win.end();
@@ -93,4 +97,8 @@ pub fn message(text: &str, close: &str) {
     while win.shown() {
         app::wait();
     }
+}
+
+fn measure_text(text: &str) -> (i32, i32) {
+    frame::Frame::default().with_label(text).measure_label()
 }
